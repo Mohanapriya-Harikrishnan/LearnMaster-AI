@@ -2781,3 +2781,166 @@ setTimeout(() => {
         );
     }
 }, 1000);
+
+// ============================================
+// AI LEARNING ASSISTANT - ADD THIS WHOLE SECTION
+// ============================================
+
+// AI Learning Assistant Functions
+function toggleAIChat() {
+    const chatWindow = document.getElementById('aiChatWindow');
+    if (chatWindow) {
+        chatWindow.classList.toggle('open');
+        // Remove notification when opened
+        if (chatWindow.classList.contains('open')) {
+            const notification = document.querySelector('.ai-notification');
+            if (notification) notification.style.display = 'none';
+        }
+    }
+}
+
+function handleAIKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendAIMessage();
+    }
+}
+
+function sendAIMessage() {
+    const input = document.getElementById('aiUserInput');
+    if (!input) return;
+    
+    const message = input.value.trim();
+    if (!message) return;
+    
+    // Add user message
+    addMessage(message, 'user');
+    input.value = '';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Simulate AI thinking
+    setTimeout(() => {
+        removeTypingIndicator();
+        const response = getAIResponse(message);
+        addMessage(response, 'bot');
+    }, 1500);
+}
+
+function addMessage(text, sender) {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    if (!messagesContainer) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ${sender}-message`;
+    
+    messageDiv.innerHTML = `
+        <div class="ai-message-avatar">${sender === 'bot' ? '🤖' : '👤'}</div>
+        <div class="ai-message-content">${text}</div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    if (!messagesContainer) return;
+    
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'ai-message bot-message';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `
+        <div class="ai-message-avatar">🤖</div>
+        <div class="ai-typing">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+    messagesContainer.appendChild(typingDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+function askAI(question) {
+    const input = document.getElementById('aiUserInput');
+    if (input) {
+        input.value = question;
+        sendAIMessage();
+    }
+}
+
+function getAIResponse(message) {
+    message = message.toLowerCase();
+    
+    // Get current course context if available
+    const currentContext = currentCourse ? 
+        courses.find(c => c.code === currentCourse) : null;
+    
+    // Course-related responses
+    if (message.includes('engineering mechanics') || message.includes('mechanics')) {
+        return "📚 **Engineering Mechanics**\n\nEngineering Mechanics deals with forces and their effects on bodies. It includes:\n• **Statics** - bodies at rest\n• **Dynamics** - bodies in motion\n\nKey topics: forces, equilibrium, friction, moments, and kinematics. Check the videos in this course for detailed explanations!";
+    }
+    else if (message.includes('mathematics') || message.includes('calculus') || message.includes('derivative') || message.includes('integral')) {
+        return "📝 **Mathematics-I**\n\nThis course covers:\n• **Differential Calculus** - derivatives, rates of change\n• **Integral Calculus** - areas, volumes\n• **Matrices** - linear algebra\n• **Vector Calculus**\n\nNeed help with a specific problem? Try the practice quizzes!";
+    }
+    else if (message.includes('physics')) {
+        return "⚡ **Physics**\n\nTopics include:\n• **Mechanics** - Newton's laws\n• **Waves & Oscillations**\n• **Thermodynamics**\n• **Electromagnetism**\n• **Modern Physics**\n\nWatch the video lectures for detailed explanations!";
+    }
+    else if (message.includes('autocad') || message.includes('graphics') || message.includes('drafting')) {
+        return "✏️ **Engineering Graphics**\n\nLearn technical drawing using AutoCAD:\n• 2D Drafting basics\n• 3D Modeling\n• Orthographic projections\n• Isometric drawings\n\nPractice with basic commands like line, circle, and trim!";
+    }
+    else if (message.includes('materials') || message.includes('material science')) {
+        return "🔬 **Engineering Materials**\n\nKey concepts:\n• Crystal Structure\n• Mechanical Properties\n• Phase Diagrams\n• Heat Treatment\n• Composites\n\nUnderstanding structure-property relationships is key!";
+    }
+    
+    // Study tips
+    else if (message.includes('how to study') || message.includes('study tips') || message.includes('prepare')) {
+        return "📚 **Study Tips**\n\n• Watch videos and take notes (+50 XP each!)\n• Practice problems daily\n• Join the discussion in comments (+10 XP)\n• Use XP Battle mode for fun learning\n• Review topics you find difficult\n• Take breaks every 45 minutes\n\nEarn XP while you learn! 🎯";
+    }
+    
+    // XP and battle related
+    else if (message.includes('xp') || message.includes('battle') || message.includes('earn')) {
+        return "⚡ **How to Earn XP**\n\n• Watch videos: +50 XP\n• Comment on videos: +10 XP\n• Win battles: Varies based on wager\n• Add helpful videos: +100 XP\n• Daily login bonus: +20 XP\n\n🏆 **Battle Mode**: Wager XP against others and win big!";
+    }
+    
+    // Greetings
+    else if (message.includes('hello') || message.includes('hi') || message.includes('hey') || message.includes('namaste')) {
+        return `Hello ${currentUser?.fullName || 'there'}! 👋 How can I help you with your studies today? You can ask me about any course or topic!`;
+    }
+    
+    // Help
+    else if (message.includes('help') || message.includes('what can you do')) {
+        return "🤖 **I can help you with:**\n\n• 📚 Explaining course concepts\n• 💡 Study tips and strategies\n• ⚡ XP and battle mode questions\n• 🧭 Navigating the platform\n• 📝 Assignment help\n• 🔍 Finding specific topics\n\nJust ask me anything about your courses!";
+    }
+    
+    // Current course context
+    else if (currentContext && message.includes(currentContext.code.toLowerCase())) {
+        return `**${currentContext.title}**\n\nThis course has ${currentContext.videos} videos covering: ${currentContext.topics.slice(0, 3).join(', ')} and more. Your current progress is ${currentContext.progress}%. Keep going! 🚀`;
+    }
+    
+    // Default response
+    else {
+        return "That's a great question! 🤔\n\nI'd recommend:\n• Checking the relevant course videos\n• Joining the discussion in comments\n• Trying XP Battle mode to test your knowledge\n\nCould you tell me which specific topic you'd like help with? I can explain it in more detail!";
+    }
+}
+
+// Initialize AI Assistant when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+        // Check if AI elements already exist
+        if (!document.getElementById('aiChatButton')) {
+            console.log('🤖 AI Assistant initialized');
+        }
+    }, 500);
+});
+
+console.log('🤖 AI Learning Assistant loaded successfully!');

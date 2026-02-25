@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduQuest - Gamified B.Tech Learning Platform</title>
+    <title>LearnMaster AI - Smart B.Tech Learning Platform</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
@@ -20,7 +20,7 @@
     <div id="authSection" class="auth-container">
         <div class="auth-card">
             <div class="logo">
-                <h1>📚 EduQuest</h1>
+              <h1>🚀 LearnMaster AI</h1>
                 <p>Level up your B.Tech journey!</p>
             </div>
             
@@ -135,7 +135,7 @@
         <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-content">
-                <div class="nav-brand" onclick="goToHomepage()">📚 EduQuest</div>
+                <div class="nav-brand" onclick="goToHomepage()">🚀 LearnMaster AI</div>
                 
                 <div class="nav-menu">
                     <a class="nav-item active" data-section="university">🏛️ University</a>
@@ -401,6 +401,38 @@
 
      <!-- Main JavaScript -->
     <script defer src="app.js"></script>
+    <!-- AI Learning Assistant -->
+<div class="ai-chat-button" id="aiChatButton" onclick="toggleAIChat()">
+    🤖
+    <span class="ai-notification">1</span>
+</div>
+
+<div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+        <div>
+            <span class="ai-avatar">🤖</span>
+            <span>LearnMaster AI Assistant</span>
+        </div>
+        <button class="ai-close-btn" onclick="toggleAIChat()">×</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-message bot-message">
+            <div class="ai-message-avatar">🤖</div>
+            <div class="ai-message-content">
+                Hi! I'm your AI learning assistant. Ask me anything about your courses!
+                <div class="ai-suggestions">
+                    <span onclick="askAI('What is Engineering Mechanics?')">📚 What is Engineering Mechanics?</span>
+                    <span onclick="askAI('Explain calculus derivatives')">📝 Explain derivatives</span>
+                    <span onclick="askAI('Help me with physics problems')">⚡ Help with physics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ai-chat-input">
+        <input type="text" id="aiUserInput" placeholder="Ask me anything..." onkeypress="handleAIKeyPress(event)">
+        <button onclick="sendAIMessage()">Send</button>
+    </div>
+</div>
     
 </body>
 
